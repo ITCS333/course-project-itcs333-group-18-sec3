@@ -3,7 +3,13 @@
 # ITCS### Course Page
 
 ## The names and student IDs of all team members.
+-Zain Asaad Hasaan Aldallal ID:202209165
 
 ## A table indicating which student was responsible for which task.
-
+| Task | Student | ID | 
+|----------|----------|----------|
+|  Task-1 |  .   | .    |
+|  Task-2 |  .   |  .    |
+|  Task-3  | .  |  .        |
+|  Task-4  | Zain Aldallal  | 202209165|
 ## A link to your live, hosted application on Replit.
