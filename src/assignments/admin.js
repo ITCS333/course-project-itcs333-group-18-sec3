@@ -17,8 +17,11 @@ let assignments = [];
 
 // --- Element Selections ---
 // TODO: Select the assignment form ('#assignment-form').
+const assignmentForm = document.querySelector("#assignment-form");
 
 // TODO: Select the assignments table body ('#assignments-tbody').
+const assignmentTableBody = document.querySelector("#assignments-tbody");
+
 
 // --- Functions ---
 
@@ -34,7 +37,40 @@ let assignments = [];
  */
 function createAssignmentRow(assignment) {
   // ... your implementation here ...
+  const tr = document.createElement("tr");
+
+  // Title
+  const titleTd = document.createElement("td");
+  titleTd.textContent = assignment.title;
+
+  // Due date
+  const dueDateTd = document.createElement("td");
+  dueDateTd.textContent = assignment.dueDate;
+
+  // Actions (Edit + Delete buttons)
+  const actionsTd = document.createElement("td");
+
+  const editBtn = document.createElement("button");
+  editBtn.textContent = "Edit";
+  editBtn.classList.add("edit-btn");
+  editBtn.dataset.id = assignment.id;
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "Delete";
+  deleteBtn.classList.add("delete-btn");
+  deleteBtn.dataset.id = assignment.id;
+
+  actionsTd.appendChild(editBtn);
+  actionsTd.appendChild(deleteBtn);
+
+  tr.appendChild(titleTd);
+  tr.appendChild(dueDateTd);
+  tr.appendChild(actionsTd);
+
+  return tr;
 }
+
+
 
 /**
  * TODO: Implement the renderTable function.
