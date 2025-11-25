@@ -36,18 +36,16 @@ const assignmentTableBody = document.querySelector("#assignments-tbody");
  * - A "Delete" button with class "delete-btn" and `data-id="${id}"`.
  */
 function createAssignmentRow(assignment) {
-  // ... your implementation here ...
+
   const tr = document.createElement("tr");
 
-  // Title
   const titleTd = document.createElement("td");
   titleTd.textContent = assignment.title;
 
-  // Due date
+  
   const dueDateTd = document.createElement("td");
   dueDateTd.textContent = assignment.dueDate;
 
-  // Actions (Edit + Delete buttons)
   const actionsTd = document.createElement("td");
 
   const editBtn = document.createElement("button");
@@ -81,8 +79,13 @@ function createAssignmentRow(assignment) {
  * append the resulting <tr> to `assignmentsTableBody`.
  */
 function renderTable() {
-  // ... your implementation here ...
-}
+  assignmentTableBody.innerHTML= "";
+  assignments.forEach(assignment =>{
+  const row = createAssignmentRow(assignment)
+  assignmentTableBody.appendChild(row);
+  });
+  }
+
 
 /**
  * TODO: Implement the handleAddAssignment function.
@@ -96,8 +99,25 @@ function renderTable() {
  * 6. Reset the form.
  */
 function handleAddAssignment(event) {
-  // ... your implementation here ...
+event.preventDefault();
+
+const title = document.querySelector("#assignment-title").value;
+const description = document.querySelector("#assignment-description").value;
+const dueDate = document.querySelector("#assignment-due-date").value;
+const files = document.querySelector("#assignment-files").value;
+
+const newAssignment ={
+  id:`asg_${Date.now()}`,
+  title:title,
+  description:description,
+  dueDate: dueDate,
+  files: files
+};
+assignments.push(newAssignment);
+renderTable();
+event.target.reset();
 }
+
 
 /**
  * TODO: Implement the handleTableClick function.
@@ -110,7 +130,11 @@ function handleAddAssignment(event) {
  * 4. Call `renderTable()` to refresh the list.
  */
 function handleTableClick(event) {
-  // ... your implementation here ...
+  if (event.target.classList.contains("delete-btn")){
+    const idToDelete = event.target.dataest.id;
+    assignments = assignments.filter(item => item.id!==idToDelete);
+    renderTable();
+  }
 }
 
 /**
@@ -124,7 +148,12 @@ function handleTableClick(event) {
  * 5. Add the 'click' event listener to `assignmentsTableBody` (calls `handleTableClick`).
  */
 async function loadAndInitialize() {
-  // ... your implementation here ...
+const response = await fetch('assignments.json');
+assignments = await response.json();
+renderTable();
+assignmentForm.addEventListener('submit', handleAddAssignment);
+assignmentTableBody.addEventListener('click', handleTableClick);
+
 }
 
 // --- Initial Page Load ---
