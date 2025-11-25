@@ -3,18 +3,21 @@
     "id": 1,
     "title": "Week 1: Introduction to HTML",
     "startDate": "2025-09-01",
-    "description": "Learn the basics of HTML structure and tags."
+    "description": "Learn the basics of HTML structure and tags.",
+    "links": ["https://example.com/week1-ex1", "https://example.com/week1-ex2"]
   },
   {
     "id": 2,
-    "title": "Week 2: CSS Styling", 
+    "title": "Week 2: CSS Styling",
     "startDate": "2025-09-08",
-    "description": "Style your web pages with CSS."
+    "description": "Style your web pages with CSS.",
+    "links": ["https://example.com/week2-ex1", "https://example.com/week2-ex2"]
   },
   {
-    "id": 3,
+    "id": 3, 
     "title": "Week 3: JavaScript Fundamentals",
     "startDate": "2025-09-15",
-    "description": "Learn JavaScript programming basics."
+    "description": "Learn JavaScript programming basics.",
+    "links": ["https://example.com/week3-ex1", "https://example.com/week3-ex2"]
   }
 ]
