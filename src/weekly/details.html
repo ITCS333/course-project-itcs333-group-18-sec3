@@ -14,17 +14,17 @@
 </head>
 <body>
     <header>
-        <h1>Week 1: Introduction to HTML</h1>
+       <h1 id="week-title">Week 1: Introduction to HTML</h1>
     </header>
 
     <main>
         <article>
-            <p>Starts on: 2025-09-01</p>
+            <p id="week-start-date">Starts on: 2025-09-01</p>
             <h2>Description & Notes</h2>
-            <p>This week covers the basics of HTML structure, tags, and elements.</p>
+            <p id="week-description">This week covers the basics of HTML</p>
             
             <h2>Exercises & Resources</h2>
-            <ul>
+            <ul id="week-links-list">
                 <li><a href="#">Exercise 1 - Basic Tags</a></li>
                 <li><a href="#">Exercise 2 - HTML Structure</a></li>
                 <li><a href="#">HTML Cheat Sheet</a></li>
@@ -34,7 +34,7 @@
         <section id="discussion-forum">
             <h2>Discussion</h2>
             
-            <div>
+           <div id="comment-list">
                 <article>
                     <p>I have a question about the 'header' tag.</p>
                     <footer>Posted by: Sara</footer>
@@ -46,12 +46,13 @@
                 </article>
             </div>
 
-            <form action="#">
+           <form id="comment-form" action="#">
                 <fieldset>
                     <legend>Ask a Question</legend>
                     
                     <label for="new-comment">Your Comment:</label>
-                    <textarea id="new-comment" required></textarea>
+                   <textarea id="new-comment-text" required></textarea>
+
                     
                     <button type="submit">Post Comment</button>
                 </fieldset>
