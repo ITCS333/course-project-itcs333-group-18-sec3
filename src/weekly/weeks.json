@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Week 1: Introduction to HTML",
+    "startDate": "2025-09-01",
+    "description": "Learn the basics of HTML structure and tags."
+  },
+  {
+    "id": 2,
+    "title": "Week 2: CSS Styling", 
+    "startDate": "2025-09-08",
+    "description": "Style your web pages with CSS."
+  },
+  {
+    "id": 3,
+    "title": "Week 3: JavaScript Fundamentals",
+    "startDate": "2025-09-15",
+    "description": "Learn JavaScript programming basics."
+  }
+]
