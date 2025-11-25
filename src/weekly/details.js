@@ -17,13 +17,20 @@
   3. Implement the TODOs below.
 */
 
+// --- Element Selections ---
+// TODO: Select all the elements you added IDs for in step 2.
+const weekTitle = document.getElementById('week-title');
+const weekStartDate = document.getElementById('week-start-date');
+const weekDescription = document.getElementById('week-description');
+const weekLinksList = document.getElementById('week-links-list');
+const commentList = document.getElementById('comment-list');
+const commentForm = document.getElementById('comment-form');
+const newCommentText = document.getElementById('new-comment-text');
+
 // --- Global Data Store ---
 // These will hold the data related to *this* specific week.
 let currentWeekId = null;
 let currentComments = [];
-
-// --- Element Selections ---
-// TODO: Select all the elements you added IDs for in step 2.
 
 // --- Functions ---
 
