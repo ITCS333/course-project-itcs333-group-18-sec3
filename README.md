@@ -9,7 +9,7 @@
 ## A table indicating which student was responsible for which task.
 | Task | Student | ID | 
 |----------|----------|----------|
-|  Task-1 | maryam muqbel   | 202205900   |
+|  Task-1 | Maryam Muqbel   | 202205900   |
 |  Task-2 |  .   |  .    |
 |  Task-3  | Amna Khalid | 202206405   |
 |  Task-4  | Zain Aldallal  | 202209165|
