@@ -14,12 +14,13 @@
      <title>Assignment Details</title>
     <!-- TODO: Link to your CSS framework or stylesheet. -->
     <link rel="stylesheet" href="styles.css">
+    <script src="details.js" defer></script>
 
 </head>
 <body>
     <!-- TODO: Create a 'header' with a main heading ('h1'). Use a dummy title like "Assignment 1: HTML Basics". -->
      <header>
-     <h1>Assignment 1: HTML Basics</h1>
+     <h1 id="assignment-title">Assignment 1: HTML Basics</h1>
      </header>
     <!-- TODO: Create the 'main' content area. -->
      <main>
@@ -27,7 +28,7 @@
         <!-- TODO: Use an 'article' to display the main assignment information. -->
         <article class="assignment-details">
             <!-- TODO: Add a paragraph ('p') to display the due date, e.g., "Due: YYYY-MM-DD". -->
-             <p class="due-date">Due:2025-12-31</p>
+             <p id="assignment-due-date" class="due-date" `>Due:2025-12-31</p>
 
             <!-- TODO: Add a sub-heading ('h2') "Description". -->
             <h2>Description</h2>
@@ -38,7 +39,7 @@
             <!-- TODO: Add another sub-heading ('h2') "Attached Files & Links". -->
              <h2>Attached Files & Links</h2>
             <!-- TODO: Use an unordered list ('ul') to display the links. -->
-             <ul class="attachments-list">
+             <ul class="attachments-list" id="assignment-files-list"`>
                 <!-- TODO: Add list items ('li') with anchor tags ('a') for each resource. Use dummy links for now. -->
                 <!-- Example: <li><a href="#">assignment-brief.pdf</a></li> -->
                  <li><a href="#">assignment-bref.pdf</a> </li>
@@ -56,7 +57,7 @@
             <h2>Questions & Discussion</h2>
             <!-- Subsection 2.1: Existing Comments -->
             <!-- TODO: Add a container (like a 'div') for the list of comments. -->
-                 <div class="comments-container">
+                 <div  id="comment-list"class="comments-container"`>
 
                 <!-- TODO: Add 1-2 dummy comments to show the structure. -->
                 <!-- Example Comment 1: -->
@@ -81,7 +82,7 @@
                          - label 'for': "new-comment"
                          - textarea 'id': "new-comment", required -->
                         <label for="new-comment">Write your comment:</label>
-                        <textarea id="new-comment" required placeholder="Type your question here.."></textarea>
+                        <textarea id="new-comment-text" required placeholder="Type your question here.."></textarea>
                     <!-- TODO: Add a 'button' to submit the comment.
                          - type="submit", Text: "Post Comment" -->
                          <button type="submit">Post Comment</button>
