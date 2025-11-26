@@ -9,17 +9,27 @@
 <html lang="en">
 <head>
     <!-- TODO: Add meta tags for charset and viewport. -->
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <!-- TODO: Add a title, e.g., "Course Assignments". -->
+    <title>Course Assignments</title>
 
     <!-- TODO: Link to your CSS framework or stylesheet. -->
+    <link rel="stylesheet" href="styles.css">
+
 </head>
 <body>
 
     <!-- TODO: Create a 'header' with a main heading ('h1') "Course Assignments". -->
+     <header>
+        <h1>Course Assignments</h1>
+    </header>
 
     <!-- TODO: Create the 'main' content area. -->
+     <main>
         <!-- TODO: Create a 'section' to contain the list of assignments. -->
+         <section id="assignment-list-section"`>
             <!-- TODO: Add 2-3 dummy assignment entries using the structure below. -->
 
             <!-- Example Assignment 1: -->
@@ -30,13 +40,33 @@
                 <!-- TODO: Add an anchor tag ('a') that links to the detail page. 
                      - For now, the 'href' can be "assignment-detail.html".
                      - The link text should be "View Details & Discussion". -->
+                <article class="assignment-card">
+                <h2>Assignment 1: HTML Basics</h2>
+                <p><strong>Due:</strong> 2025-12-31</p>
+                <p>A beginner task to practice building structure using HTML elements.</p>
+                <a href="details.html?id=1">View Details & Discussion</a>
+            </article>
             <!-- End of article. -->
 
             <!-- Example Assignment 2: -->
             <!-- TODO: Create a second 'article' for another assignment with the same structure. -->
+             <article class="assignment-card">
+                <h2>Assignment 2: CSS Styling</h2>
+                <p><strong>Due:</strong> 2026-01-10</p>
+                <p>Apply design concepts, styling, colors, layout, and responsiveness.</p>
+                <a href="details.html?id=2">View Details & Discussion</a>
+            </article>
+
+            <article class="assignment-card">
+                <h2>Assignment 3: JavaScript Essentials</h2>
+                <p><strong>Due:</strong> 2026-02-05</p>
+                <p>Learn how to add logic, interactivity, and dynamic behavior to pages.</p>
+                <a href="details.html?id=3">View Details & Discussion</a>
+            </article>
 
         <!-- End of assignment list section. -->
+         </section>
     <!-- End of main. -->
-
+    </main>
 </body>
 </html>
