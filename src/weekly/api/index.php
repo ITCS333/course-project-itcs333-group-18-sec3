@@ -44,35 +44,45 @@
 // Allow cross-origin requests (CORS) if needed
 // Allow specific HTTP methods (GET, POST, PUT, DELETE, OPTIONS)
 // Allow specific headers (Content-Type, Authorization)
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
 
 // TODO: Handle preflight OPTIONS request
 // If the request method is OPTIONS, return 200 status and exit
-
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();  }
 
 // TODO: Include the database connection class
 // Assume the Database class has a method getConnection() that returns a PDO instance
 // Example: require_once '../config/Database.php';
-
+require_once '../config/Database.php';
 
 // TODO: Get the PDO database connection
 // Example: $database = new Database();
 //          $db = $database->getConnection();
+$database = new Database();
+$db = $database->getConnection();
 
 
 // TODO: Get the HTTP request method
 // Use $_SERVER['REQUEST_METHOD']
-
+$method = $_SERVER['REQUEST_METHOD'];
 
 // TODO: Get the request body for POST and PUT requests
 // Use file_get_contents('php://input') to get raw POST data
 // Decode JSON data using json_decode()
-
+$input = json_decode(file_get_contents('php://input'), true);
 
 // TODO: Parse query parameters
 // Get the 'resource' parameter to determine if request is for weeks or comments
 // Example: ?resource=weeks or ?resource=comments
-
+$resource = $_GET['resource'] ?? '';
+$id = $_GET['id'] ?? '';
+$week_id = $_GET['week_id'] ?? '';
 
 // ============================================================================
 // WEEKS CRUD OPERATIONS
@@ -90,38 +100,65 @@
  */
 function getAllWeeks($db) {
     // TODO: Initialize variables for search, sort, and order from query parameters
-    
+    $search = $_GET['search'] ?? '';
+    $sort = $_GET['sort'] ?? 'start_date';
+    $order = $_GET['order'] ?? 'asc';
+
     // TODO: Start building the SQL query
     // Base query: SELECT week_id, title, start_date, description, links, created_at FROM weeks
+     $sql = "SELECT week_id, title, start_date, description, links, created_at FROM weeks";
+    $params = [];
     
     // TODO: Check if search parameter exists
     // If yes, add WHERE clause using LIKE for title and description
     // Example: WHERE title LIKE ? OR description LIKE ?
+      if (!empty($search)) {
+        $sql .= " WHERE title LIKE ? OR description LIKE ?";
+        $searchTerm = "%{$search}%";
+        $params[] = $searchTerm;
+        $params[] = $searchTerm;  }
     
     // TODO: Check if sort parameter exists
     // Validate sort field to prevent SQL injection (only allow: title, start_date, created_at)
     // If invalid, use default sort field (start_date)
+     $allowedSort = ['title', 'start_date', 'created_at'];
+    if (!in_array($sort, $allowedSort)) {
+        $sort = 'start_date'; }
     
     // TODO: Check if order parameter exists
     // Validate order to prevent SQL injection (only allow: asc, desc)
     // If invalid, use default order (asc)
+    $allowedOrder = ['asc', 'desc'];
+    if (!in_array($order, $allowedOrder)) {
+        $order = 'asc'; }
     
     // TODO: Add ORDER BY clause to the query
+    $sql .= " ORDER BY $sort $order";
     
     // TODO: Prepare the SQL query using PDO
+     $stmt = $db->prepare($sql);
     
     // TODO: Bind parameters if using search
     // Use wildcards for LIKE: "%{$searchTerm}%"
+     if (!empty($search)) {
+        $stmt->bindParam(1, $params[0]);
+        $stmt->bindParam(2, $params[1]);  }
     
     // TODO: Execute the query
+     $stmt->execute();
     
     // TODO: Fetch all results as an associative array
+     $weeks = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // TODO: Process each week's links field
     // Decode the JSON string back to an array using json_decode()
+     foreach ($weeks as &$week) {
+        $week['links'] = json_decode($week['links'], true) ?? []; }
     
     // TODO: Return JSON response with success status and data
     // Use sendResponse() helper function
+    sendResponse(true, 'Weeks retrieved successfully', $weeks);
+
 }
 
 
