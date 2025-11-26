@@ -24,6 +24,13 @@ let currentComments = [];
 
 // --- Element Selections ---
 // TODO: Select all the elements you added IDs for in step 2.
+const assignmentTitle = document.getElementById("assignment-title");
+const assignmentDueDate = document.getElementById("assignment-due-date");
+const assignmentDescription = document.getElementById("assignment-description");
+const assignmentFilesList = document.getElementById("assignment-files-list");
+const commentList = document.getElementById("comment-list");
+const commentForm = document.getElementById("comment-form");
+const newCommentText = document.getElementById("new-comment-text");
 
 // --- Functions ---
 
@@ -35,7 +42,8 @@ let currentComments = [];
  * 3. Return the id.
  */
 function getAssignmentIdFromURL() {
-  // ... your implementation here ...
+const params = new URLSearchParams(window.location.search);
+    return params.get("id");
 }
 
 /**
@@ -49,7 +57,20 @@ function getAssignmentIdFromURL() {
  * `<li><a href="#">...</a></li>` for each file in the assignment's 'files' array.
  */
 function renderAssignmentDetails(assignment) {
-  // ... your implementation here ...
+ assignmentTitle.textContent = assignment.title;
+    assignmentDueDate.textContent = "Due: " + assignment.dueDate;
+    assignmentDescription.textContent = assignment.description;
+
+    assignmentFilesList.innerHTML = ""; 
+
+    assignment.files.forEach(file => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.textContent = file;
+        a.href = "#";
+        li.appendChild(a);
+        assignmentFilesList.appendChild(li);
+    });
 }
 
 /**
@@ -58,7 +79,19 @@ function renderAssignmentDetails(assignment) {
  * It should return an <article> element matching the structure in `details.html`.
  */
 function createCommentArticle(comment) {
-  // ... your implementation here ...
+const article = document.createElement("article");
+    article.classList.add("comment");
+
+    const p = document.createElement("p");
+    p.textContent = comment.text;
+
+    const footer = document.createElement("footer");
+    footer.textContent = "Posted by: " + comment.author;
+
+    article.appendChild(p);
+    article.appendChild(footer);
+
+    return article;
 }
 
 /**
@@ -70,7 +103,12 @@ function createCommentArticle(comment) {
  * append the resulting <article> to `commentList`.
  */
 function renderComments() {
-  // ... your implementation here ...
+commentList.innerHTML = "";
+
+    currentComments.forEach(c => {
+        const commentElement = createCommentArticle(c);
+        commentList.appendChild(commentElement);
+    });
 }
 
 /**
@@ -87,8 +125,19 @@ function renderComments() {
  * 7. Clear the `newCommentText` textarea.
  */
 function handleAddComment(event) {
-  // ... your implementation here ...
-}
+e.preventDefault();
+
+    const text = newCommentText.value.trim();
+    if (!text) return;
+
+    const newComment = {
+        author: "Student",
+        text: text
+    };
+
+    currentComments.push(newComment);
+    renderComments();
+    newCommentText.value = "";}
 
 /**
  * TODO: Implement an `initializePage` function.
@@ -107,8 +156,24 @@ function handleAddComment(event) {
  * 7. If the assignment is not found, display an error.
  */
 async function initializePage() {
-  // ... your implementation here ...
-}
+currentAssignmentId = getAssignmentIdFromURL();
+    if (!currentAssignmentId) return alert("No assignment ID found in URL.");
 
+    const [assignmentsResponse, commentsResponse] = await Promise.all([
+        fetch("assignments.json"),
+        fetch("comments.json")
+    ]);
+    const assignmentsData = await assignmentsResponse.json();
+    const commentsData = await commentsResponse.json();
+    const assignment = assignmentsData.find(a => a.id == currentAssignmentId);
+    currentComments = commentsData[currentAssignmentId] || [];
+
+    if (!assignment) return alert("Assignment not found.");
+
+    renderAssignmentDetails(assignment);
+    renderComments();
+
+    commentForm.addEventListener("submit", handleAddComment);
+}
 // --- Initial Page Load ---
 initializePage();
