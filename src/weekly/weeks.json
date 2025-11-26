@@ -1,23 +1,32 @@
 [
   {
-    "id": 1,
+    "id": "week_1",
     "title": "Week 1: Introduction to HTML",
-    "startDate": "2025-09-01",
-    "description": "Learn the basics of HTML structure and tags.",
-    "links": ["https://example.com/week1-ex1", "https://example.com/week1-ex2"]
+    "startDate": "2025-10-27",
+    "description": "This week covers the fundamental building blocks of the web: HTML. We will explore semantic tags, document structure, and basic elements like headings, paragraphs, links, and images.",
+    "links": [
+      "https://developer.mozilla.org/en-US/docs/Web/HTML",
+      "https://www.w3schools.com/html/html_basic.asp"
+    ]
   },
   {
-    "id": 2,
-    "title": "Week 2: CSS Styling",
-    "startDate": "2025-09-08",
-    "description": "Style your web pages with CSS.",
-    "links": ["https://example.com/week2-ex1", "https://example.com/week2-ex2"]
+    "id": "week_2",
+    "title": "Week 2: Introduction to CSS",
+    "startDate": "2025-11-03",
+    "description": "Learn how to style your HTML documents. We will cover selectors, the box model, colors, fonts, and basic layouts.",
+    "links": [
+      "https://developer.mozilla.org/en-US/docs/Web/CSS",
+      "https://css-tricks.com/guides/beginner/"
+    ]
   },
   {
-    "id": 3, 
-    "title": "Week 3: JavaScript Fundamentals",
-    "startDate": "2025-09-15",
-    "description": "Learn JavaScript programming basics.",
-    "links": ["https://example.com/week3-ex1", "https://example.com/week3-ex2"]
+    "id": "week_3",
+    "title": "Week 3: CSS Flexbox and Grid",
+    "startDate": "2025-11-10",
+    "description": "A deep dive into modern CSS layout techniques. We will master Flexbox for 1D layouts and CSS Grid for 2D layouts.",
+    "links": [
+      "https://css-tricks.com/snippets/css/a-guide-to-flexbox/",
+      "https://css-tricks.com/snippets/css/complete-guide-grid/"
+    ]
   }
 ]
