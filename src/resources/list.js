@@ -13,6 +13,7 @@
 
 // --- Element Selections ---
 // TODO: Select the section for the resource list ('#resource-list-section').
+const listSection = document.querySelector("#resource-list-section");
 
 // --- Functions ---
 
@@ -24,7 +25,23 @@
  * (This is how the detail page will know which resource to load).
  */
 function createResourceArticle(resource) {
-  // ... your implementation here ...
+  const article = document.createElement("article");
+
+  const titleEl = document.createElement("h2");
+  titleEl.textContent = resource.title;
+
+  const descEl = document.createElement("p");
+  descEl.textContent = resource.description;
+
+  const linkEl = document.createElement("a");
+  linkEl.href = `details.html?id=${resource.id}`;
+  linkEl.textContent = "View Resource & Discussion";
+
+  article.appendChild(titleEl);
+  article.appendChild(descEl);
+  article.appendChild(linkEl);
+
+  return article;
 }
 
 /**
@@ -39,7 +56,15 @@ function createResourceArticle(resource) {
  * - Append the returned <article> element to `listSection`.
  */
 async function loadResources() {
-  // ... your implementation here ...
+  const response = await fetch("resources.json");
+  const resources = await response.json();
+
+  listSection.innerHTML = "";
+
+  resources.forEach(resource => {
+    const article = createResourceArticle(resource);
+    listSection.appendChild(article);
+  });
 }
 
 // --- Initial Page Load ---
