@@ -102,6 +102,8 @@
 #comment-form textarea {
     height: 120px;
 }
+
+
 /* Admin Table */
 table {
     width: 100%;
@@ -187,4 +189,64 @@ header h1 {
 
 main {
     padding: 2rem;
+}
+form {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+}
+
+section h2 {
+    color: #1e40af;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+form {
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+fieldset {
+    border: 1px solid #cbd5e1;
+    padding: 1.5rem;
+    border-radius: 4px;
+}
+
+legend {
+    font-weight: bold;
+    color: #1e40af;
+    padding: 0 0.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+button,
+.btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0.2rem;
 }
