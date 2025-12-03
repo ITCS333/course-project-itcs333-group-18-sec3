@@ -595,7 +595,7 @@ function deleteComment($db, $commentId) {
 
 try {
     // TODO: Get the 'resource' query parameter to determine which resource to access
-    
+    $resource = $_GET['resource'] ?? null;
     
     // TODO: Route based on HTTP method and resource type
     
@@ -604,13 +604,26 @@ try {
         
         if ($resource === 'assignments') {
             // TODO: Check if 'id' query parameter exists
-            
+            if ($id) {
+                getAssignmentById($db, $id);
+            } else {
+                getAllAssignments($db);
+            }
+
         } elseif ($resource === 'comments') {
             // TODO: Check if 'assignment_id' query parameter exists
-            
+             $assignmentId = $_GET['assignment_id'] ?? null;
+
+            if ($assignmentId) {
+                getCommentsByAssignment($db, $assignmentId);
+            } else {
+                echo json_encode(["error" => "assignment_id is required"]);
+            }
+
         } else {
             // TODO: Invalid resource, return 400 error
-            
+             http_response_code(400);
+            echo json_encode(["error" => "Invalid resource"]);
         }
         
     } elseif ($method === 'POST') {
@@ -618,13 +631,16 @@ try {
         
         if ($resource === 'assignments') {
             // TODO: Call createAssignment($db, $data)
-            
+            createAssignment($db, $input);
+
         } elseif ($resource === 'comments') {
             // TODO: Call createComment($db, $data)
-            
+            createComment($db, $input);
+
         } else {
             // TODO: Invalid resource, return 400 error
-            
+            http_response_code(400);
+            echo json_encode(["error" => "Invalid resource"]);
         }
         
     } elseif ($method === 'PUT') {
@@ -632,10 +648,12 @@ try {
         
         if ($resource === 'assignments') {
             // TODO: Call updateAssignment($db, $data)
-            
+            updateAssignment($db, $input);
+
         } else {
             // TODO: PUT not supported for other resources
-            
+            http_response_code(400);
+            echo json_encode(["error" => "PUT not supported for this resource"]);
         }
         
     } elseif ($method === 'DELETE') {
@@ -643,25 +661,44 @@ try {
         
         if ($resource === 'assignments') {
             // TODO: Get 'id' from query parameter or request body
-            
+            $assignmentId = $id ?? ($input['id'] ?? null);
+             if ($assignmentId) {
+                deleteAssignment($db, $assignmentId);
+            } else {
+                echo json_encode(["error" => "Assignment ID is required"]);
+            }
+
         } elseif ($resource === 'comments') {
             // TODO: Get comment 'id' from query parameter
-            
+        $commentId = $_GET['id'] ?? null;
+         if ($commentId) {
+                deleteComment($db, $commentId);
+            } else {
+                echo json_encode(["error" => "Comment ID is required"]);
+            }
+
         } else {
             // TODO: Invalid resource, return 400 error
-            
+             http_response_code(400);
+            echo json_encode(["error" => "Invalid resource"]);
         }
         
     } else {
         // TODO: Method not supported
+        http_response_code(405);
+        echo json_encode(["error" => "Method not supported"]);
         
     }
     
 } catch (PDOException $e) {
     // TODO: Handle database errors
+    http_response_code(500);
+    echo json_encode(["db_error" => $e->getMessage()]);
     
 } catch (Exception $e) {
     // TODO: Handle general errors
+    http_response_code(500);
+    echo json_encode(["error" => $e->getMessage()]);
     
 }
 
@@ -678,16 +715,18 @@ try {
  */
 function sendResponse($data, $statusCode = 200) {
     // TODO: Set HTTP response code
-    
+    http_response_code($statusCode);
     
     // TODO: Ensure data is an array
-    
+    if (!is_array($data)) {
+        $data = ["message" => $data];
+    }
     
     // TODO: Echo JSON encoded data
-    
+    echo json_encode($data);
     
     // TODO: Exit to prevent further execution
-    
+    exit;
 }
 
 
@@ -699,16 +738,16 @@ function sendResponse($data, $statusCode = 200) {
  */
 function sanitizeInput($data) {
     // TODO: Trim whitespace from beginning and end
-    
+    $data = trim($data);
     
     // TODO: Remove HTML and PHP tags
-    
+    $data = strip_tags($data);
     
     // TODO: Convert special characters to HTML entities
-    
+    $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
     
     // TODO: Return the sanitized data
-    
+    return $data;
 }
 
 
@@ -720,10 +759,10 @@ function sanitizeInput($data) {
  */
 function validateDate($date) {
     // TODO: Use DateTime::createFromFormat to validate
-    
+    $d = DateTime::createFromFormat('Y-m-d', $date);
     
     // TODO: Return true if valid, false otherwise
-    
+    return $d && $d->format('Y-m-d') === $date;
 }
 
 
@@ -736,10 +775,10 @@ function validateDate($date) {
  */
 function validateAllowedValue($value, $allowedValues) {
     // TODO: Check if $value exists in $allowedValues array
-    
+    $isValid = in_array($value, $allowedValues, true);
     
     // TODO: Return the result
-    
+     return $isValid;
 }
 
 ?>
