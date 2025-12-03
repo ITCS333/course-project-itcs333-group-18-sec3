@@ -1,0 +1,153 @@
+/* Assignment List Section */
+#assignment-list-section {
+    margin-top: 2rem;
+}
+
+.assignment-card {
+    background: white;
+    padding: 1.2rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 1rem;
+    transition: 0.25s;
+}
+
+.assignment-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.assignment-card h2 {
+    color: #1e40af;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.assignment-card p {
+    margin-bottom: 0.7rem;
+}
+
+.assignment-card a {
+    color: #2563eb;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.assignment-card a:hover {
+    text-decoration: underline;
+}
+/* Assignment Details Page */
+.assignment-details {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 2rem;
+}
+
+.assignment-details h2 {
+    margin-top: 1.5rem;
+    color: #1e40af;
+}
+
+.assignment-details .due-date {
+    font-weight: bold;
+    color: #ef4444;
+    margin-bottom: 1rem;
+}
+
+/* Attachments List */
+.attachments-list li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.attachments-list a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.attachments-list a:hover {
+    text-decoration: underline;
+}
+
+/* Comments Section */
+#discussion-forum {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.comments-container {
+    margin-bottom: 1.5rem;
+}
+
+.comment {
+    padding: 1rem;
+    background: #f9fafb;
+    border-left: 3px solid #10b981;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.comment footer {
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+    color: #666;
+}
+
+/* Comment Form */
+#comment-form textarea {
+    height: 120px;
+}
+/* Admin Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+th {
+    background: #2563eb;
+    color: white;
+    padding: 1rem;
+    text-align: left;
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Admin Buttons */
+button.edit-btn {
+    background: #f59e0b;
+}
+
+button.edit-btn:hover {
+    background: #d97706;
+}
+
+button.delete-btn {
+    background: #ef4444;
+}
+
+button.delete-btn:hover {
+    background: #dc2626;
+}
+
+/* Add Assignment Form */
+#assignment-form {
+    margin-top: 2rem;
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+#assignment-form input,
+#assignment-form textarea {
+    margin-bottom: 1rem;
+}
