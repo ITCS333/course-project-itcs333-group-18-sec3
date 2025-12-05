@@ -4,8 +4,9 @@
 
 ## The names and student IDs of all team members.
 -Zain Asaad Hasaan Aldallal ID:202209165
--Amna Khalid Othman         ID:202206405
-
+-Amna Khalid Othman          ID:202206405
+- Maryam Muqbel              ID :202205900
+- Maha abdulaziz             ID :202206039
 ## A table indicating which student was responsible for which task.
 | Task | Student | ID | 
 |----------|----------|----------|
