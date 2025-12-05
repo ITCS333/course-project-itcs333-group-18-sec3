@@ -25,4 +25,111 @@
 <body>
 
     <!-- TODO: Create a 'header' with a main heading ('h1') "Manage Course Resources". -->
-    <he
+    <header>
+        <h1>Manage Course Resources</h1>
+    </header>
+
+    <!-- TODO: Create the 'main' content area. -->
+    <main>
+
+        <!-- Section 1: Add/Edit Resource Form -->
+        <!-- TODO: Create a 'section' for the form. -->
+        <section>
+            <!-- TODO: Add a sub-heading ('h2') "Add a New Resource". -->
+            <h2>Add a New Resource</h2>
+
+            <!-- TODO: Create a 'form' with an id "resource-form". Action can be '#'. -->
+            <form id="resource-form" action="#">
+                <!-- TODO: Use a 'fieldset' to group the form controls. -->
+                <fieldset>
+                    <!-- TODO: Add a 'legend', e.g., "Resource Details". -->
+                    <legend>Resource Details</legend>
+
+                    <!-- TODO: Add a 'label' and 'input' for the resource title.
+                         - label 'for': "resource-title"
+                         - input 'id': "resource-title", type="text", required -->
+                    <label for="resource-title">Resource Title</label>
+                    <input id="resource-title" type="text" required>
+
+                    <!-- TODO: Add a 'label' and 'textarea' for the resource description.
+                         - label 'for': "resource-description"
+                         - textarea 'id': "resource-description" -->
+                    <label for="resource-description">Description</label>
+                    <textarea id="resource-description"></textarea>
+
+                    <!-- TODO: Add a 'label' and 'input' for the resource link.
+                         - label 'for': "resource-link"
+                         - input 'id': "resource-link", type="url", required -->
+                    <label for="resource-link">Resource Link</label>
+                    <input id="resource-link" type="url" required>
+
+                    <!-- TODO: Add a 'button' to submit the form.
+                         - id="add-resource", type="submit", Text: "Add Resource" -->
+                    <button id="add-resource" type="submit">Add Resource</button>
+                </fieldset>
+            </form>
+        </section>
+        <!-- End of form section. -->
+
+
+        <!-- Section 2: Existing Resources List -->
+        <!-- TODO: Create a 'section' to display the list of current resources. -->
+        <section>
+            <!-- TODO: Add a sub-heading ('h2') "Existing Resources". -->
+            <h2>Existing Resources</h2>
+
+            <!-- TODO: Create a 'table' with id "resources-table". -->
+            <table id="resources-table">
+                <!-- TODO: Create a 'thead' and a 'tr' inside it. -->
+                <thead>
+                    <tr>
+                        <!-- TODO: Add 'th' elements for "Title", "Description", and "Actions". -->
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <!-- TODO: Create a 'tbody' for the data. -->
+                <tbody>
+                    <!-- TODO: Add 2-3 rows of dummy data to see the structure. -->
+
+                    <!-- Example Row 1: -->
+                    <!-- TODO: Create a 'tr' for the first resource. -->
+                    <tr>
+                        <!-- TODO: Add 'td' cells for a title (e.g., "Chapter 1 Notes") and a description. -->
+                        <td>Chapter 1 Notes</td>
+                        <td>Summary of chapter 1</td>
+
+                        <!-- TODO: Add a 'td' containing the action buttons. -->
+                        <td>
+                            <!-- TODO: Add an "Edit" button. -->
+                            <button>Edit</button>
+                            <!-- TODO: Add a "Delete" button. -->
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+
+                    <!-- Example Row 2: -->
+                    <!-- TODO: Create another 'tr' for a second resource (e.g., a web link). -->
+                    <tr>
+                        <!-- TODO: Add 'td' cells for the title and description. -->
+                        <td>Website Link</td>
+                        <td>Useful online resource</td>
+
+                        <!-- TODO: Add a 'td' with "Edit" and "Delete" buttons. -->
+                        <td>
+                            <button>Edit</button>
+                            <button>Delete</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </section>
+        <!-- End of resources list section. -->
+
+    </main>
+    <!-- End of main. -->
+</body>
+</html>
