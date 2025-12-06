@@ -748,11 +748,18 @@ try {
  * @param mixed $data - Data to send (will be JSON encoded)
  * @param int $statusCode - HTTP status code (default: 200)
  */
-function sendResponse($data, $statusCode = 200) {
+function sendResponse($success, $message, $data = null, $statusCode = 200) {
     // TODO: Set HTTP response code
     // Use http_response_code($statusCode)
       http_response_code($statusCode);
+      $response = [
+        'success' => $success,
+        'message' => $message,
+    ];
     
+    if ($data !== null) {
+        $response['data'] = $data;
+    }
     // TODO: Echo JSON encoded data
     // Use json_encode($data)
      echo json_encode($data);
