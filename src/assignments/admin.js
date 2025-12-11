@@ -131,7 +131,7 @@ event.target.reset();
  */
 function handleTableClick(event) {
   if (event.target.classList.contains("delete-btn")){
-    const idToDelete = event.target.dataest.id;
+    const idToDelete = event.target.dataset.id;
     assignments = assignments.filter(item => item.id!==idToDelete);
     renderTable();
   }
