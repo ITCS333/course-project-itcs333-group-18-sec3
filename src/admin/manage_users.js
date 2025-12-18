@@ -1,6 +1,9 @@
 const apiUrl = 'index.php'; 
 
 
+// ==============================
+// Create student row
+// ==============================
 function createStudentRow(student) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -16,6 +19,9 @@ function createStudentRow(student) {
 }
 
 
+// ==============================
+// Render table
+// ==============================
 function renderTable(students) {
     const tbody = document.querySelector('#student-table tbody');
     if (!tbody) return;
@@ -27,6 +33,9 @@ function renderTable(students) {
 }
 
 
+// ==============================
+// Load students
+// ==============================
 async function loadStudents() {
     try {
         const tbody = document.querySelector('#student-table tbody');
@@ -44,38 +53,38 @@ async function loadStudents() {
     }
 }
 
-// ==============================
-// Add new student
-// ==============================
+
+
+function handleAddStudent(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('student-name')?.value;
+    const email = document.getElementById('student-email')?.value;
+    const password = document.getElementById('default-password')?.value;
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        const msg = document.getElementById('add-msg');
+        if (msg) msg.textContent = data.message;
+
+        if (data.success) {
+            loadStudents();
+            event.target.reset();
+        }
+    })
+    .catch(err => console.error(err));
+}
+
 const addForm = document.getElementById('add-student-form');
 if (addForm) {
-    addForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const name = document.getElementById('student-name')?.value;
-        const email = document.getElementById('student-email')?.value;
-        const password = document.getElementById('default-password')?.value;
-
-        try {
-            const res = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password })
-            });
-
-            const data = await res.json();
-            const msg = document.getElementById('add-msg');
-            if (msg) msg.textContent = data.message;
-
-            if (data.success) {
-                loadStudents();
-                e.target.reset();
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    });
+    addForm.addEventListener('submit', handleAddStudent);
 }
+
 
 // ==============================
 // Edit student
@@ -106,6 +115,7 @@ async function editStudent(student_id) {
     }
 }
 
+
 // ==============================
 // Hide edit popup
 // ==============================
@@ -116,6 +126,7 @@ if (cancelEditBtn) {
         if (popup) popup.style.display = 'none';
     });
 }
+
 
 // ==============================
 // Update student
@@ -161,13 +172,9 @@ if (editForm) {
 
                 const passData = await passRes.json();
                 if (msgEl) {
-                    if (passData.success) {
-                        msgEl.textContent += " & Password updated successfully!";
-                        msgEl.style.color = "green";
-                    } else {
-                        msgEl.textContent += " & Password update failed: " + passData.message;
-                        msgEl.style.color = "orange";
-                    }
+                    msgEl.textContent += passData.success
+                        ? " & Password updated successfully!"
+                        : " & Password update failed: " + passData.message;
                 }
             }
 
@@ -181,13 +188,10 @@ if (editForm) {
 
         } catch (err) {
             console.error(err);
-            if (msgEl) {
-                msgEl.textContent = "Server error!";
-                msgEl.style.color = "red";
-            }
         }
     });
 }
+
 
 // ==============================
 // Delete student
@@ -205,55 +209,48 @@ async function deleteStudent(student_id) {
 }
 
 
-const passwordForm = document.getElementById('password-form');
-if (passwordForm) {
-    passwordForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
 
-        const newPass = document.getElementById('new-password')?.value.trim();
-        const confirmPass = document.getElementById('confirm-password')?.value.trim();
-        const teacher = JSON.parse(localStorage.getItem('teacher'));
-        const msgEl = document.getElementById('password-msg');
+function handleChangePassword(event) {
+    event.preventDefault();
 
-        if (newPass !== confirmPass) {
-            if (msgEl) {
-                msgEl.textContent = "Passwords do not match!";
-                msgEl.style.color = "red";
-            }
-            return;
-        }
+    const newPass = document.getElementById('new-password')?.value.trim();
+    const confirmPass = document.getElementById('confirm-password')?.value.trim();
+    const teacher = JSON.parse(localStorage.getItem('teacher'));
+    const msgEl = document.getElementById('password-msg');
 
-        if (newPass.length < 8) {
-            if (msgEl) {
-                msgEl.textContent = "Password must be at least 8 characters!";
-                msgEl.style.color = "red";
-            }
-            return;
-        }
+    if (newPass !== confirmPass) {
+        if (msgEl) msgEl.textContent = "Passwords do not match!";
+        return;
+    }
 
-        try {
-            const res = await fetch('index.php?action=change_teacher_password', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ teacher_id: teacher.id, new_password: newPass })
-            });
+    if (newPass.length < 8) {
+        if (msgEl) msgEl.textContent = "Password must be at least 8 characters!";
+        return;
+    }
 
-            const data = await res.json();
-            if (msgEl) {
-                msgEl.textContent = data.message;
-                msgEl.style.color = data.success ? 'green' : 'red';
-            }
-        } catch (err) {
-            console.error(err);
-            if (msgEl) {
-                msgEl.textContent = "Server error!";
-                msgEl.style.color = "red";
-            }
-        }
+    fetch('index.php?action=change_teacher_password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ teacher_id: teacher.id, new_password: newPass })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (msgEl) msgEl.textContent = data.message;
+    })
+    .catch(() => {
+        if (msgEl) msgEl.textContent = "Server error!";
     });
 }
 
+const passwordForm = document.getElementById('password-form');
+if (passwordForm) {
+    passwordForm.addEventListener('submit', handleChangePassword);
+}
 
+
+// ==============================
+// Initial load
+// ==============================
 if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
     loadStudents();
 }
