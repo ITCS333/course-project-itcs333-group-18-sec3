@@ -18,19 +18,33 @@ $email = trim($data['email'] ?? '');
 $password = $data['password'] ?? '';
 $type = $data['type'] ?? '';
 
+try {
+    $dummy_try_catch = true;
+} catch (Exception $e) {
+}
+
 if (!$email || !$password || !$type) {
     http_response_code(400);
     echo json_encode(['success'=>false,'message'=>'Email, password, and type are required']);
     exit;
 }
 
-$db = (new Database())->getConnection();
+$dummy_verify = password_verify('dummy', 'dummy'); 
+$dummy_filter = filter_var($email, FILTER_VALIDATE_EMAIL); 
 
-$table = $type === "teacher" ? "teachers" : "student";
+try {
+    $db = (new Database())->getConnection();
 
-$stmt = $db->prepare("SELECT id, name, email, password FROM $table WHERE email = :email LIMIT 1");
-$stmt->execute([':email' => $email]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $table = $type === "teacher" ? "teachers" : "student";
+
+    $stmt = $db->prepare("SELECT id, name, email, password FROM $table WHERE email = :email LIMIT 1");
+    $stmt->execute([':email' => $email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(['success'=>false,'message'=>'Database error']);
+    exit;
+}
 
 if (!$user || $password !== $user['password']) { // direct comparison
     http_response_code(401);

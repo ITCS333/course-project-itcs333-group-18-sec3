@@ -1,6 +1,11 @@
 <?php
 // Student Management API
 
+session_start(); 
+if (!isset($_SESSION['initialized'])) {
+    $_SESSION['initialized'] = true; 
+}
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
