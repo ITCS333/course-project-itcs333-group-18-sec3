@@ -20,25 +20,29 @@
              <nav>
                <h2>Site Navigation</h2>
 
-            <ul id="nav-links">
-                 <li id="log"><a href="#" id="logout-btn">Logout</a></li>
+             <div id="auth-area"></div>
 
-                 
-                 
-                 
-                 
-                 
-               </ul>
-          </nav>
-          <script>
-                    const logoutBtn = document.getElementById("logout-btn");
+    <script>
+        const authArea = document.getElementById("auth-area");
 
-                    logoutBtn.addEventListener("click", () => {
-                    localStorage.removeItem("teacher");
-                    localStorage.removeItem("student");
-                    location.reload();
-                    });
-               </script>
+        const teacher = localStorage.getItem("teacher");
+        const student = localStorage.getItem("student");
+
+        if (teacher || student) {
+            authArea.innerHTML = '  <li id="log"><a href="#" id="logout-btn"">Logout</a></li>';
+
+            const logoutBtn = document.getElementById("logout-btn");
+            logoutBtn.addEventListener("click", () => {
+                localStorage.removeItem("teacher");
+                localStorage.removeItem("student");
+                location.reload();
+            });
+        } else {
+            authArea.innerHTML = '  <li id="log"><a href="src/auth/login.html" id="login-btn">Login</a></li>';
+
+           
+        }
+    </script>
                    
                          <li><a href="src/admin/manage_users.html">Admin Portal (Manage Students)</a></li>
                          <li><a href="src/resources/admin.html">Admin: Manage Resources</a></li>
