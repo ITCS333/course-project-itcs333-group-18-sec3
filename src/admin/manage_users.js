@@ -1,15 +1,16 @@
-
 const apiUrl = 'index.php'; 
 
 // Fetch and display students
 async function loadStudents() {
     try {
+        const tbody = document.querySelector('#student-table tbody');
+        if (!tbody) return;
+
         const res = await fetch(apiUrl);
         const data = await res.json();
-        const tbody = document.querySelector('#student-table tbody');
         tbody.innerHTML = '';
 
-        if(data.success && data.data) {
+        if (data.success && data.data) {
             data.data.forEach(student => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -24,36 +25,41 @@ async function loadStudents() {
                 tbody.appendChild(tr);
             });
         }
-    } catch(err) {
+    } catch (err) {
         console.error(err);
     }
 }
 
 // Add new student
-document.getElementById('add-student-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const name = document.getElementById('student-name').value;
-    const email = document.getElementById('student-email').value;
-    const password = document.getElementById('default-password').value;
+const addForm = document.getElementById('add-student-form');
+if (addForm) {
+    addForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('student-name')?.value;
+        const email = document.getElementById('student-email')?.value;
+        const password = document.getElementById('default-password')?.value;
 
-    try {
-        const res = await fetch(`${apiUrl}`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ name, email, password})
-        });
-        const data = await res.json();
-        document.getElementById('add-msg').textContent = data.message;
-        if(data.success) {
-            loadStudents();
-            e.target.reset();
+        try {
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password })
+            });
+            const data = await res.json();
+            const msg = document.getElementById('add-msg');
+            if (msg) msg.textContent = data.message;
+
+            if (data.success) {
+                loadStudents();
+                e.target.reset();
+            }
+        } catch (err) {
+            console.error(err);
         }
-    } catch(err) {
-        console.error(err);
-    }
-});
+    });
+}
 
-
+// Edit student
 async function editStudent(student_id) {
     try {
         const res = await fetch(`${apiUrl}?id=${student_id}`);
@@ -64,130 +70,163 @@ async function editStudent(student_id) {
         }
 
         const student = data.data;
-        document.getElementById('edit-student-id').value = student_id;
-        document.getElementById('edit-name').value = student.name;
-        document.getElementById('edit-email').value = student.email;
-        document.getElementById('edit-msg').textContent = '';
+        const idEl = document.getElementById('edit-student-id');
+        const nameEl = document.getElementById('edit-name');
+        const emailEl = document.getElementById('edit-email');
+        const msgEl = document.getElementById('edit-msg');
+        const popup = document.getElementById('edit-popup');
 
-        document.getElementById('edit-popup').style.display = 'flex';
-    } catch(err) {
+        if (idEl) idEl.value = student_id;
+        if (nameEl) nameEl.value = student.name;
+        if (emailEl) emailEl.value = student.email;
+        if (msgEl) msgEl.textContent = '';
+        if (popup) popup.style.display = 'flex';
+    } catch (err) {
         console.error(err);
     }
 }
 
 // Hide popup
-document.getElementById('cancel-edit').addEventListener('click', () => {
-    document.getElementById('edit-popup').style.display = 'none';
-});
+const cancelEditBtn = document.getElementById('cancel-edit');
+if (cancelEditBtn) {
+    cancelEditBtn.addEventListener('click', () => {
+        const popup = document.getElementById('edit-popup');
+        if (popup) popup.style.display = 'none';
+    });
+}
 
-document.getElementById('edit-student-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
+// Update student
+const editForm = document.getElementById('edit-student-form');
+if (editForm) {
+    editForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    const id = document.getElementById('edit-student-id').value;
-    const name = document.getElementById('edit-name').value.trim();
-    const email = document.getElementById('edit-email').value.trim();
-    const password = document.getElementById('edit-password')?.value.trim(); // optional password field
-    const msgEl = document.getElementById('edit-msg');
+        const id = document.getElementById('edit-student-id')?.value;
+        const name = document.getElementById('edit-name')?.value.trim();
+        const email = document.getElementById('edit-email')?.value.trim();
+        const password = document.getElementById('edit-password')?.value.trim();
+        const msgEl = document.getElementById('edit-msg');
 
-    if (!name || !email) {
-        msgEl.textContent = "All fields are required!";
-        msgEl.style.color = "red";
-        return;
-    }
+        if (!name || !email) {
+            if (msgEl) {
+                msgEl.textContent = "All fields are required!";
+                msgEl.style.color = "red";
+            }
+            return;
+        }
 
-    try {
-        const res = await fetch(apiUrl, {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({id, name, email})
-        });
-
-        const data = await res.json();
-        msgEl.textContent = data.message;
-        msgEl.style.color = data.success ? 'green' : 'red';
-
-        if (data.success && password) {
-            const passRes = await fetch(`${apiUrl}?action=change_password`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ id, current_password: '', new_password: password })
+        try {
+            const res = await fetch(apiUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, name, email })
             });
-            const passData = await passRes.json();
-            if(passData.success) {
-                msgEl.textContent += " & Password updated successfully!";
-                msgEl.style.color = "green";
-            } else {
-                msgEl.textContent += " & Password update failed: " + passData.message;
-                msgEl.style.color = "orange";
+
+            const data = await res.json();
+            if (msgEl) {
+                msgEl.textContent = data.message;
+                msgEl.style.color = data.success ? 'green' : 'red';
+            }
+
+            if (data.success && password) {
+                const passRes = await fetch(`${apiUrl}?action=change_password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, current_password: '', new_password: password })
+                });
+
+                const passData = await passRes.json();
+                if (msgEl) {
+                    if (passData.success) {
+                        msgEl.textContent += " & Password updated successfully!";
+                        msgEl.style.color = "green";
+                    } else {
+                        msgEl.textContent += " & Password update failed: " + passData.message;
+                        msgEl.style.color = "orange";
+                    }
+                }
+            }
+
+            if (data.success) {
+                loadStudents();
+                setTimeout(() => {
+                    const popup = document.getElementById('edit-popup');
+                    if (popup) popup.style.display = 'none';
+                }, 1500);
+            }
+
+        } catch (err) {
+            console.error(err);
+            if (msgEl) {
+                msgEl.textContent = "Server error!";
+                msgEl.style.color = "red";
             }
         }
-
-        if(data.success) {
-            loadStudents(); 
-            setTimeout(() => {
-                document.getElementById('edit-popup').style.display = 'none';
-            }, 1500);
-        }
-
-    } catch(err) {
-        console.error(err);
-        msgEl.textContent = "Server error!";
-        msgEl.style.color = "red";
-    }
-});
-
-
+    });
+}
 
 // Delete student
 async function deleteStudent(student_id) {
-    if(!confirm("Are you sure you want to delete this student?")) return;
+    if (!confirm("Are you sure you want to delete this student?")) return;
     try {
         const res = await fetch(`${apiUrl}?id=${student_id}`, { method: 'DELETE' });
         const data = await res.json();
         alert(data.message);
-        if(data.success) loadStudents();
-    } catch(err) {
+        if (data.success) loadStudents();
+    } catch (err) {
         console.error(err);
     }
 }
+
 // Change password (Teacher)
-document.getElementById('password-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const newPass = document.getElementById('new-password').value.trim();
-    const confirmPass = document.getElementById('confirm-password').value.trim();
-    const teacher = JSON.parse(localStorage.getItem('teacher'));
-    const msgEl = document.getElementById('password-msg');
+const passwordForm = document.getElementById('password-form');
+if (passwordForm) {
+    passwordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const newPass = document.getElementById('new-password')?.value.trim();
+        const confirmPass = document.getElementById('confirm-password')?.value.trim();
+        const teacher = JSON.parse(localStorage.getItem('teacher'));
+        const msgEl = document.getElementById('password-msg');
 
-    if(newPass !== confirmPass) {
-        msgEl.textContent = "Passwords do not match!";
-        msgEl.style.color = "red";
-        return;
-    }
+        if (newPass !== confirmPass) {
+            if (msgEl) {
+                msgEl.textContent = "Passwords do not match!";
+                msgEl.style.color = "red";
+            }
+            return;
+        }
 
-    if(newPass.length < 8){
-        msgEl.textContent = "Password must be at least 8 characters!";
-        msgEl.style.color = "red";
-        return;
-    }
+        if (newPass.length < 8) {
+            if (msgEl) {
+                msgEl.textContent = "Password must be at least 8 characters!";
+                msgEl.style.color = "red";
+            }
+            return;
+        }
 
-    try {
-        const res = await fetch('index.php?action=change_teacher_password', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ teacher_id: teacher.id, new_password: newPass })
-        });
+        try {
+            const res = await fetch('index.php?action=change_teacher_password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ teacher_id: teacher.id, new_password: newPass })
+            });
 
-        const data = await res.json();
-        msgEl.textContent = data.message;
-        msgEl.style.color = data.success ? 'green' : 'red';
-    } catch(err){
-        console.error(err);
-        msgEl.textContent = "Server error!";
-        msgEl.style.color = "red";
-    }
-});
+            const data = await res.json();
+            if (msgEl) {
+                msgEl.textContent = data.message;
+                msgEl.style.color = data.success ? 'green' : 'red';
+            }
+        } catch (err) {
+            console.error(err);
+            if (msgEl) {
+                msgEl.textContent = "Server error!";
+                msgEl.style.color = "red";
+            }
+        }
+    });
+}
 
-
-
-// Load students on page load
-loadStudents();
+// Load students on page load (safe for tests)
+if (typeof document !== 'undefined') {
+    loadStudents();
+}
