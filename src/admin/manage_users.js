@@ -1,4 +1,4 @@
-const apiUrl = 'index.php';
+const apiUrl = 'api/index.php';
 
 
 function createStudentRow(student) {
@@ -92,7 +92,7 @@ function handleChangePassword(event) {
         return;
     }
 
-    fetch('index.php?action=change_teacher_password', {
+    fetch('api/index.php?action=change_teacher_password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ teacher_id: teacher.id, new_password: newPass })
