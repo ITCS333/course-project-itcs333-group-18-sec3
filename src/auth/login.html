@@ -1,49 +1,46 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Login</title>
-
-      <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body style="display:flex;justify-content:center;align-items:center;height:100vh;">
-     <script>
-          const teacher = localStorage.getItem("teacher");
-          const student = localStorage.getItem("student");
 
-          if (teacher || student) {
-          window.location.href = "../../index.html";
-          }
-          </script>
-    <button onclick="history.back()">Back</button>
+    <button type="button" id="back-btn" onclick="history.back()">Back</button>
 
     <main style="width: 350px;">
-    <section>
-        <h2>Welcome Back!</h2>
-        <label for="user-type">Login as:</label>
-        <select id="user-type">
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-        </select>
+        <section>
+            <h2>Welcome Back!</h2>
+            <label for="user-type">Login as:</label>
+            <select id="user-type">
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+            </select>
 
-        <form id="login-form" action="#">
-            <fieldset>
-                <legend>Secure Login</legend>
-                <label for="email">Email Address</label>
-                <input type="email" id="email" required>
-                <label for="password">Password</label>
-                <input type="password" id="password" required minlength="8">
-                <button type="submit" id="login">Log In</button>
-            </fieldset>
-            <div id="message-container"></div>
-        </form>
-    </section>
-</main>
-    
-    <script src="login.js" defer ></script>
+            <form id="login-form" action="#">
+                <fieldset>
+                    <legend>Secure Login</legend>
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required minlength="8">
+                    <button type="submit" id="login">Log In</button>
+                </fieldset>
+                <div id="message-container"></div>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        const teacher = localStorage.getItem("teacher");
+        const student = localStorage.getItem("student");
+        if (teacher || student) {
+            window.location.href = "../../index.html";
+        }
+    </script>
+
+    <script src="login.js" defer></script>
 </body>
 </html>

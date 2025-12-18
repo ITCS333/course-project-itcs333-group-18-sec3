@@ -1,9 +1,6 @@
-const apiUrl = 'index.php'; 
+const apiUrl = 'index.php';
 
 
-// ==============================
-// Create student row
-// ==============================
 function createStudentRow(student) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -19,9 +16,6 @@ function createStudentRow(student) {
 }
 
 
-// ==============================
-// Render table
-// ==============================
 function renderTable(students) {
     const tbody = document.querySelector('#student-table tbody');
     if (!tbody) return;
@@ -33,9 +27,6 @@ function renderTable(students) {
 }
 
 
-// ==============================
-// Load students
-// ==============================
 async function loadStudents() {
     try {
         const tbody = document.querySelector('#student-table tbody');
@@ -52,7 +43,6 @@ async function loadStudents() {
         console.error(err);
     }
 }
-
 
 
 function handleAddStudent(event) {
@@ -81,10 +71,62 @@ function handleAddStudent(event) {
 }
 
 const addForm = document.getElementById('add-student-form');
-if (addForm) {
-    addForm.addEventListener('submit', handleAddStudent);
+if (addForm) addForm.addEventListener('submit', handleAddStudent);
+
+
+function handleChangePassword(event) {
+    event.preventDefault();
+
+    const newPass = document.getElementById('new-password')?.value.trim();
+    const confirmPass = document.getElementById('confirm-password')?.value.trim();
+    const teacher = JSON.parse(localStorage.getItem('teacher'));
+    const msgEl = document.getElementById('password-msg');
+
+    if (newPass !== confirmPass) {
+        if (msgEl) msgEl.textContent = "Passwords do not match!";
+        return;
+    }
+
+    if (newPass.length < 8) {
+        if (msgEl) msgEl.textContent = "Password must be at least 8 characters!";
+        return;
+    }
+
+    fetch('index.php?action=change_teacher_password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ teacher_id: teacher.id, new_password: newPass })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (msgEl) msgEl.textContent = data.message;
+    })
+    .catch(() => {
+        if (msgEl) msgEl.textContent = "Server error!";
+    });
 }
 
+const passwordForm = document.getElementById('password-form');
+if (passwordForm) passwordForm.addEventListener('submit', handleChangePassword);
+
+
+function handleTableClick(event) {
+    // placeholder for table click logic (edit/delete delegation)
+}
+
+
+function handleSearch(event) {
+    // placeholder for search input logic
+}
+
+
+function handleSort(event) {
+    // placeholder for sort select logic
+}
+
+async function loadStudentsAndInitialize() {
+    await loadStudents();
+}
 
 // ==============================
 // Edit student
@@ -115,7 +157,6 @@ async function editStudent(student_id) {
     }
 }
 
-
 // ==============================
 // Hide edit popup
 // ==============================
@@ -126,7 +167,6 @@ if (cancelEditBtn) {
         if (popup) popup.style.display = 'none';
     });
 }
-
 
 // ==============================
 // Update student
@@ -193,9 +233,6 @@ if (editForm) {
 }
 
 
-// ==============================
-// Delete student
-// ==============================
 async function deleteStudent(student_id) {
     if (!confirm("Are you sure you want to delete this student?")) return;
     try {
@@ -209,48 +246,6 @@ async function deleteStudent(student_id) {
 }
 
 
-
-function handleChangePassword(event) {
-    event.preventDefault();
-
-    const newPass = document.getElementById('new-password')?.value.trim();
-    const confirmPass = document.getElementById('confirm-password')?.value.trim();
-    const teacher = JSON.parse(localStorage.getItem('teacher'));
-    const msgEl = document.getElementById('password-msg');
-
-    if (newPass !== confirmPass) {
-        if (msgEl) msgEl.textContent = "Passwords do not match!";
-        return;
-    }
-
-    if (newPass.length < 8) {
-        if (msgEl) msgEl.textContent = "Password must be at least 8 characters!";
-        return;
-    }
-
-    fetch('index.php?action=change_teacher_password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ teacher_id: teacher.id, new_password: newPass })
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (msgEl) msgEl.textContent = data.message;
-    })
-    .catch(() => {
-        if (msgEl) msgEl.textContent = "Server error!";
-    });
-}
-
-const passwordForm = document.getElementById('password-form');
-if (passwordForm) {
-    passwordForm.addEventListener('submit', handleChangePassword);
-}
-
-
-// ==============================
-// Initial load
-// ==============================
 if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
-    loadStudents();
+    loadStudentsAndInitialize();
 }
