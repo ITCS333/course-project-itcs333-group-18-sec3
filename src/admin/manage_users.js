@@ -1,40 +1,57 @@
 const apiUrl = 'index.php'; 
 
-// Fetch and display students
+
+function createStudentRow(student) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td>${student.name}</td>
+        <td>${student.id}</td>
+        <td>${student.email}</td>
+        <td>
+            <button onclick="editStudent('${student.id}')">Edit</button>
+            <button onclick="deleteStudent('${student.id}')">Delete</button>
+        </td>
+    `;
+    return tr;
+}
+
+
+function renderTable(students) {
+    const tbody = document.querySelector('#student-table tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+    students.forEach(student => {
+        tbody.appendChild(createStudentRow(student));
+    });
+}
+
+
 async function loadStudents() {
     try {
         const tbody = document.querySelector('#student-table tbody');
-        if (!tbody) return;
+        if (!tbody || typeof fetch === 'undefined') return;
 
         const res = await fetch(apiUrl);
-        const data = await res.json();
-        tbody.innerHTML = '';
+        if (!res) return;
 
+        const data = await res.json();
         if (data.success && data.data) {
-            data.data.forEach(student => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${student.name}</td>
-                    <td>${student.id}</td>
-                    <td>${student.email}</td>
-                    <td>
-                        <button onclick="editStudent('${student.id}')">Edit</button>
-                        <button onclick="deleteStudent('${student.id}')">Delete</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+            renderTable(data.data);
         }
     } catch (err) {
         console.error(err);
     }
 }
 
+// ==============================
 // Add new student
+// ==============================
 const addForm = document.getElementById('add-student-form');
 if (addForm) {
     addForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
         const name = document.getElementById('student-name')?.value;
         const email = document.getElementById('student-email')?.value;
         const password = document.getElementById('default-password')?.value;
@@ -45,6 +62,7 @@ if (addForm) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password })
             });
+
             const data = await res.json();
             const msg = document.getElementById('add-msg');
             if (msg) msg.textContent = data.message;
@@ -59,7 +77,9 @@ if (addForm) {
     });
 }
 
+// ==============================
 // Edit student
+// ==============================
 async function editStudent(student_id) {
     try {
         const res = await fetch(`${apiUrl}?id=${student_id}`);
@@ -86,7 +106,9 @@ async function editStudent(student_id) {
     }
 }
 
-// Hide popup
+// ==============================
+// Hide edit popup
+// ==============================
 const cancelEditBtn = document.getElementById('cancel-edit');
 if (cancelEditBtn) {
     cancelEditBtn.addEventListener('click', () => {
@@ -95,7 +117,9 @@ if (cancelEditBtn) {
     });
 }
 
+// ==============================
 // Update student
+// ==============================
 const editForm = document.getElementById('edit-student-form');
 if (editForm) {
     editForm.addEventListener('submit', async (e) => {
@@ -165,7 +189,9 @@ if (editForm) {
     });
 }
 
+// ==============================
 // Delete student
+// ==============================
 async function deleteStudent(student_id) {
     if (!confirm("Are you sure you want to delete this student?")) return;
     try {
@@ -178,11 +204,12 @@ async function deleteStudent(student_id) {
     }
 }
 
-// Change password (Teacher)
+
 const passwordForm = document.getElementById('password-form');
 if (passwordForm) {
     passwordForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
         const newPass = document.getElementById('new-password')?.value.trim();
         const confirmPass = document.getElementById('confirm-password')?.value.trim();
         const teacher = JSON.parse(localStorage.getItem('teacher'));
@@ -226,7 +253,7 @@ if (passwordForm) {
     });
 }
 
-// Load students on page load (safe for tests)
-if (typeof document !== 'undefined') {
+
+if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
     loadStudents();
 }

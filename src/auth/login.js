@@ -7,6 +7,7 @@ const userTypeSelect = document.getElementById("user-type");
 // --- Functions ---
 
 function displayMessage(message, type) {
+  if (!messageContainer) return;
   messageContainer.textContent = message;
   messageContainer.className = type;
 }
@@ -24,10 +25,11 @@ function isValidPassword(password) {
  * Handle login submit
  */
 async function handleLogin(event) {
- event.preventDefault();
-  const email = emailInput.value.trim();
-  const password = passwordInput.value.trim();
-  const type = userTypeSelect.value;
+  event.preventDefault();
+
+  const email = emailInput?.value.trim();
+  const password = passwordInput?.value.trim();
+  const type = userTypeSelect?.value;
 
   // --- Client-side validation ---
   if (!isValidEmail(email)) {
@@ -49,36 +51,40 @@ async function handleLogin(event) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, type })
     });
+
     const data = await response.json();
 
     if (!response.ok || !data.success) {
       displayMessage(data.message || "Login failed.", "error");
       return;
     }
-    if(type === "teacher") {
-        localStorage.setItem("teacher", JSON.stringify({
-          id: data.user.id,
-          name: data.user.name,
-          email: data.user.email,
-          type: data.user.type
-        }));
-    }else if(type === "student") {
-        localStorage.setItem("student", JSON.stringify({
-          id: data.user.id,
-          name: data.user.name,
-          email: data.user.email,
-          type: data.user.type
-        }));
-    }
 
+    if (type === "teacher") {
+      localStorage.setItem(
+        "teacher",
+        JSON.stringify({
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          type: data.user.type
+        })
+      );
+    } else if (type === "student") {
+      localStorage.setItem(
+        "student",
+        JSON.stringify({
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          type: data.user.type
+        })
+      );
+    }
 
     displayMessage("Login successful! Redirecting...", "success");
 
     setTimeout(() => {
-      
-        window.location.href = "../../index.html";
-      
-      
+      window.location.href = "../../index.html";
     }, 800);
 
   } catch (error) {
@@ -86,4 +92,13 @@ async function handleLogin(event) {
   }
 }
 
-loginForm.addEventListener("submit", handleLogin);
+
+function setupLoginForm() {
+  if (!loginForm) return;
+  loginForm.addEventListener("submit", handleLogin);
+}
+
+// Run only in browser (safe for tests)
+if (typeof document !== "undefined") {
+  setupLoginForm();
+}
